@@ -1,53 +1,94 @@
-function getComputerChoice() {
-    return Math.floor(Math.random() * 3) % 3;
-}
+function main() {
 
-function getHumanChoice() {
-    let choice = prompt("Rock, paper or scissors?").toLowerCase();
-    switch (choice) {
-        case "rock": {
-            return 0;
-        }
-        case "paper": {
-            return 1;
-        }
-        case "scissors": {
-            return 2;
+    let computerScore = 0;
+    let humanScore = 0;
+    let prevWinner = "";
+
+    function getComputerChoice() {
+        return Math.floor(Math.random() * 3) % 3;
+    }
+
+    function getHumanChoice() {
+        let promptText = prevWinner + `human: ${humanScore}, computer: ${computerScore}\nRock, paper or scissors?`
+        let choice = prompt(promptText).toLowerCase();
+        switch (choice) {
+            case "rock": {
+                return 0;
+            }
+            case "paper": {
+                return 1;
+            }
+            case "scissors": {
+                return 2;
+            }
         }
     }
-}
 
-function determineWinner(computerChoice, humanChoice) {
-    if (computerChoice === humanChoice) {}
-    else if (Math.abs(computerChoice - humanChoice) < 2) {
-        computerChoice < humanChoice ? humanScore += 1: computerScore += 1;
+    function determineWinner(computerChoice, humanChoice) {
+        switch (computerChoice) {
+            case 0: {
+                prevWinner = "computer chose rock\n";
+                break;
+            }
+            case 1: {
+                prevWinner = "computer chose paper\n";
+                break;
+            }
+            case 2: {
+                prevWinner = "computer chose scissors\n";
+                break;
+            }
+        }
+        if (computerChoice === humanChoice) {
+            humanScore += 1;
+            computerScore += 1;
+            prevWinner += "Draw!\n"
+        }
+        else if (Math.abs(computerChoice - humanChoice) < 2) {
+            if (computerChoice < humanChoice) {
+                humanScore += 1
+                prevWinner += "You won!\n"
+            }
+            else {
+                computerScore += 1;
+                prevWinner += "Computer won :/\n"
+            }
+        }
+        else {
+            if (computerChoice < humanChoice) {
+                computerScore += 1;
+                prevWinner += "Computer won :/\n"
+            }
+            else {
+                humanScore += 1
+                prevWinner += "You won!\n"
+            }
+        }
+
     }
-    else {
-        computerChoice < humanChoice ? computerScore += 1: humanScore += 1;
+
+    function playRound() {
+        let computerChoice = getComputerChoice();
+        let humanChoice = getHumanChoice();
+        determineWinner(computerChoice, humanChoice);
+        console.log(computerChoice);
+        console.log("humanscore: " + humanScore + " computerscore: " + computerScore);
     }
+
+    function playGame() {
+        for (let i= 0; i < 5; ++i) playRound();
+    }
+    playGame();
+
+    alert(prevWinner + "\n" + " (" + humanScore + '-' + computerScore + ")");
 }
 
-function playRound() {
-    let computerChoice = getComputerChoice();
-    let humanChoice = getHumanChoice();
-    determineWinner(computerChoice, humanChoice);
-    console.log(computerChoice);
-    console.log("humanscore: " + humanScore + " computerscore: " + computerScore);
-}
+main();
 
-function playGame() {
-    for (let i= 0; i < 5; ++i) playRound();
-}
 
-let computerScore = 0;
-let humanScore = 0;
 
-playGame();
 
-let text = computerScore < humanScore ? "you won:D" : "computer won:/"; // odd number of rounds, so no draw
-text = text + " (" + humanScore + '-' + computerScore + ")";
 
-alert(text);
 
 
 
